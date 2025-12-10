@@ -27,21 +27,21 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         
-        /* 1. ANA YAPI DÜZELTMESİ (YAN YANA DURMA SORUNU ÇÖZÜMÜ) */
+        /* 1. ANA YAPI */
         html, body {
             font-family: 'Inter', sans-serif;
-            background: transparent; /* Web sitesine entegre için şeffaf */
+            background: transparent;
             color: var(--dark);
             min-height: 100vh;
-            display: block; /* Flex KALDIRILDI - Sorunun kaynağıydı */
-            padding: 10px;
+            display: block;
             margin: 0;
+            padding: 20px 10px;
         }
         
         .container {
             width: 100%;
             max-width: 950px;
-            margin: 0 auto; /* Ortalamayı sağlar */
+            margin: 0 auto;
             background: transparent;
             position: relative;
         }
@@ -111,8 +111,20 @@
         .btn:active { transform: scale(0.97); }
         .btn-primary { background: var(--primary); color: white; flex: 2; box-shadow: 0 4px 12px rgba(0,77,56,0.15); }
         .btn-primary:hover { background: var(--secondary); }
-        .btn-secondary { background: white; color: #4a5568; border: 2px solid #e2e8f0; flex: 1; }
-        .btn-secondary:hover { background: #f7fafc; border-color: #cbd5e0; }
+        
+        /* İkincil Butonlar */
+        .btn-secondary { 
+            background: white; 
+            color: var(--dark); 
+            border: 2px solid #a0aec0;
+            flex: 1; 
+            font-weight: 700;
+        }
+        .btn-secondary:hover { 
+            background: #edf2f7; 
+            border-color: var(--primary); 
+            color: var(--primary);
+        }
         
         .btn-revision { background: var(--accent) !important; color: white !important; }
         
@@ -166,39 +178,53 @@
         .summary-box h3 { color: var(--accent); font-size: 0.9rem; margin: 0; text-transform: uppercase; }
         .summary-box h2 { color: var(--primary); font-size: 1.5rem; margin: 5px 0 10px 0; line-height: 1.2; }
         
-        /* 2. MODAL DÜZELTMESİ (BUZLU CAM & TAM ORTALAMA) */
+        /* MODAL (BUZLU CAM) */
         .modal-overlay {
             display: none; 
-            position: fixed; /* Ekranı kaplar, kaymaz */
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1); /* Çok hafif beyaz fon */
-            backdrop-filter: blur(15px); /* BUZLU CAM EFEKTİ */
-            -webkit-backdrop-filter: blur(15px);
-            z-index: 10000; /* En üstte */
-            padding: 10px; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            z-index: 10000; padding: 10px; 
             overflow-y: auto; 
-            align-items: flex-start; /* İçerik uzunsa yukarıdan başlasın */
-            justify-content: center; /* Yatay ortala */
+            align-items: flex-start; justify-content: center; 
         }
         
         .modal-content {
-            background: white; 
-            width: 100%; 
-            max-width: 800px; /* A4 Genişliği */
-            border-radius: 12px; 
-            margin: 40px auto; 
-            position: relative; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            border: 1px solid rgba(0,0,0,0.1);
+            background: white; width: 100%; max-width: 800px; 
+            border-radius: 12px; margin: 40px auto; position: relative; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.1);
         }
         
-        /* RAPOR İÇ BOŞLUKLARI (METİN KESİLMESİNİ ENGELLER) */
-        .report-header { background: #fff; padding: 30px 40px; border-bottom: 4px solid var(--primary); border-radius: 12px 12px 0 0;}
+        /* RAPOR HEADER */
+        .report-header { 
+            background: #fff; padding: 30px 40px; 
+            border-bottom: 4px solid var(--primary); 
+            border-radius: 12px 12px 0 0;
+            text-align: center; 
+        }
+        .report-header .header-content {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .report-header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 800; }
+        .report-header p { font-size: 0.8rem; color: var(--accent); letter-spacing: 2px; font-weight: 700; margin: 0; text-transform: uppercase; }
+
+        /* HASTA BİLGİLERİ (ORTALI) */
+        .report-meta { 
+            background: #f7fafc; padding: 15px 40px; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem; 
+            display: flex; flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: center;
+            gap: 20px; 
+            text-align: center; 
+        }
+        .report-meta strong { color: var(--primary); }
+
+        .konsey-highlight { text-align: center; padding: 30px 40px; background: #fffdf0; border-bottom: 1px solid #e2e8f0; }
+        .konsey-badge { display: inline-block; background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+        
         .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 30px 40px; }
-        .r-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; word-wrap: break-word; } /* Metin taşmasını önler */
+        .r-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; word-wrap: break-word; } 
         .r-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 10px; }
         .r-card p { font-size: 0.9rem; margin: 0; }
 
@@ -211,15 +237,30 @@
 
         .report-footer { padding: 20px 40px; background: #f7fafc; border-top: 1px solid #e2e8f0; font-size: 0.75rem; color: #718096; text-align: center; border-radius: 0 0 12px 12px;}
         
-        /* İSİM GİRME PENCERESİ */
+        /* İSİM GİRME PENCERESİ (DÜZELTİLDİ: TAM ORTALAMA VE KAYMAYI ÖNLEME) */
         .name-modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
-            z-index: 10001; justify-content: center; align-items: center;
+            display: none; /* JS ile flex yapılır */
+            position: fixed; 
+            top: 0; left: 0; right: 0; bottom: 0; /* Ekranı tam kapla */
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(5px);
+            z-index: 10001; 
+            justify-content: center; 
+            align-items: center; /* Dikey ve yatay tam orta */
         }
-        .name-modal-content { background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .name-modal-content { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 16px; 
+            width: 90%; 
+            max-width: 350px; 
+            text-align: center; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+            margin: auto; /* Garanti ortalama */
+        }
 
-        /* --- MOBILE RESPONSIVE OPTIMIZATION --- */
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
             html, body { padding: 5px; }
             .app-header { flex-direction: column; padding: 15px; height: auto; }
@@ -235,11 +276,9 @@
             
             h2 { font-size: 1.4rem; }
             
-            /* Mobilde Rapor Düzeltmesi */
+            /* Rapor Mobil */
             .report-grid { grid-template-columns: 1fr; padding: 20px; }
             .report-header { padding: 20px; }
-            .report-header .header-flex { flex-direction: column; gap: 10px; text-align: center; }
-            .report-header .header-flex div { text-align: center !important; }
             .report-meta { padding: 15px 20px; flex-direction: column; gap: 5px; }
             .modal-content { margin: 10px 0; border-radius: 8px; }
         }
@@ -311,21 +350,25 @@
                         <div class="bmi-val-large" id="bmiValDisplay">00.0</div>
                         <div class="bmi-status-text" id="bmiStatusDisplay">Veri Bekleniyor...</div>
                     </div>
-                    <label>Yaşınız:</label>
-                    <div class="input-sync-wrapper">
-                        <input type="range" min="16" max="75" value="30" oninput="syncInput('age', this.value)">
-                        <input type="number" id="input_age" class="number-input" value="30" onchange="syncInput('age', this.value)">
-                    </div>
+                    
                     <label>Boyunuz (cm):</label>
                     <div class="input-sync-wrapper">
                         <input type="range" min="145" max="210" value="170" oninput="syncInput('height', this.value)">
                         <input type="number" id="input_height" class="number-input" value="170" onchange="syncInput('height', this.value)">
                     </div>
+
                     <label>Kilonuz (kg):</label>
                     <div class="input-sync-wrapper">
                         <input type="range" min="50" max="250" value="90" oninput="syncInput('weight', this.value)">
                         <input type="number" id="input_weight" class="number-input" value="90" onchange="syncInput('weight', this.value)">
                     </div>
+
+                    <label>Yaşınız:</label>
+                    <div class="input-sync-wrapper">
+                        <input type="range" min="16" max="75" value="30" oninput="syncInput('age', this.value)">
+                        <input type="number" id="input_age" class="number-input" value="30" onchange="syncInput('age', this.value)">
+                    </div>
+
                     <div class="nav-buttons">
                         <button class="btn btn-secondary" onclick="prevStep()">← Geri</button>
                         <button class="btn btn-primary" onclick="nextStep()">Devam Et →</button>
@@ -415,6 +458,8 @@
                             <button class="btn btn-secondary" onclick="window.open('https://via.placeholder.com/1?text=Randevu', '_blank')">📅 Randevu Al</button>
                         </div>
                         <button class="btn btn-secondary" onclick="prevStep()" style="margin-top: 5px;">⬅️ Geri</button>
+                        
+                        <button class="btn btn-secondary" style="margin-top: 5px; background:#f7fafc; color:#718096; border-color:#e2e8f0;" onclick="location.reload()">🔄 Yeni Test Başlat</button>
                     </div>
                 </div>
 
@@ -425,12 +470,10 @@
     <div class="modal-overlay" id="reportModal" style="display:none;">
         <div class="modal-content">
             <div class="report-header">
-                <div class="header-flex" style="display:flex; justify-content:space-between; align-items:center;">
-                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="Logo" style="height:40px;">
-                    <div style="text-align: right;">
-                        <h1 style="font-size: 1.1rem; color: var(--primary); margin:0;">KONSÜLTASYON RAPORU</h1>
-                        <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 2px; font-weight:700;">BİRLİKTE BAŞARABİLİRİZ</p>
-                    </div>
+                <div class="header-content">
+                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="Logo" style="height:50px; margin-bottom:10px;">
+                    <h1>KONSÜLTASYON RAPORU</h1>
+                    <p>ANTEPDİYABEZİTE - BİRLİKTE BAŞARABİLİRİZ</p>
                 </div>
             </div>
 
