@@ -26,8 +26,12 @@
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+
+        /* 1. SCROLLBAR GİZLEME (IFRAME İÇİN KRİTİK) */
+        ::-webkit-scrollbar { display: none; } /* Chrome/Safari/Opera */
+        html { -ms-overflow-style: none; scrollbar-width: none; } /* IE/Edge/Firefox */
         
-        /* 1. ANA YAPI */
+        /* 2. ANA YAPI */
         html, body {
             font-family: 'Inter', sans-serif;
             background: transparent;
@@ -35,7 +39,8 @@
             min-height: 100vh;
             display: block;
             margin: 0;
-            padding: 20px 10px;
+            padding: 10px; /* Kenar boşluğu */
+            overflow-x: hidden; /* Yatay taşmayı engelle */
         }
         
         .container {
@@ -88,10 +93,13 @@
         /* CONTENT AREA */
         .content-area { padding: 30px; }
         
-        /* INPUTS & SLIDERS */
+        /* 3. KOMPAKT PROFİL KARTI (BOŞLUKLAR AZALTILDI) */
         .input-sync-wrapper { 
-            display: flex; align-items: center; gap: 15px; margin: 15px 0; 
-            background: #f7fafc; padding: 15px; border-radius: 12px; border: 1px solid #edf2f7; 
+            display: flex; align-items: center; gap: 15px; 
+            margin: 8px 0; /* Azaltıldı (Eski: 15px) */
+            background: #f7fafc; 
+            padding: 10px 15px; /* Azaltıldı (Eski: 15px) */
+            border-radius: 12px; border: 1px solid #edf2f7; 
         }
         .number-input { 
             width: 80px; padding: 8px; font-size: 1.3rem; font-weight: 700; 
@@ -112,19 +120,10 @@
         .btn-primary { background: var(--primary); color: white; flex: 2; box-shadow: 0 4px 12px rgba(0,77,56,0.15); }
         .btn-primary:hover { background: var(--secondary); }
         
-        /* İkincil Butonlar */
         .btn-secondary { 
-            background: white; 
-            color: var(--dark); 
-            border: 2px solid #a0aec0;
-            flex: 1; 
-            font-weight: 700;
+            background: white; color: var(--dark); border: 2px solid #a0aec0; flex: 1; font-weight: 700;
         }
-        .btn-secondary:hover { 
-            background: #edf2f7; 
-            border-color: var(--primary); 
-            color: var(--primary);
-        }
+        .btn-secondary:hover { background: #edf2f7; border-color: var(--primary); color: var(--primary); }
         
         .btn-revision { background: var(--accent) !important; color: white !important; }
         
@@ -133,11 +132,20 @@
             box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3); font-weight: 700;
         }
 
+        /* 4. YENİ TEST BUTONU (CTA) */
+        .btn-restart {
+            background: #2d3748; /* Koyu Gri/Siyah */
+            color: white;
+            border: 2px solid #1a202c;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-restart:hover { background: #000; }
+
         /* CHECKBOX GRID */
         .checkbox-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 12px; 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; 
         }
         
         .cb-item input { display: none; }
@@ -200,23 +208,16 @@
         .report-header { 
             background: #fff; padding: 30px 40px; 
             border-bottom: 4px solid var(--primary); 
-            border-radius: 12px 12px 0 0;
-            text-align: center; 
+            border-radius: 12px 12px 0 0; text-align: center; 
         }
-        .report-header .header-content {
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
+        .report-header .header-content { display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .report-header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 800; }
         .report-header p { font-size: 0.8rem; color: var(--accent); letter-spacing: 2px; font-weight: 700; margin: 0; text-transform: uppercase; }
 
-        /* HASTA BİLGİLERİ (ORTALI) */
+        /* HASTA BİLGİLERİ */
         .report-meta { 
             background: #f7fafc; padding: 15px 40px; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem; 
-            display: flex; flex-wrap: wrap; 
-            justify-content: center; 
-            align-items: center;
-            gap: 20px; 
-            text-align: center; 
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; text-align: center; 
         }
         .report-meta strong { color: var(--primary); }
 
@@ -237,30 +238,23 @@
 
         .report-footer { padding: 20px 40px; background: #f7fafc; border-top: 1px solid #e2e8f0; font-size: 0.75rem; color: #718096; text-align: center; border-radius: 0 0 12px 12px;}
         
-        /* İSİM GİRME PENCERESİ (DÜZELTİLDİ: TAM ORTALAMA VE KAYMAYI ÖNLEME) */
+        /* 5. POPUP HİZALAMA FIX (VH KULLANIMI) */
         .name-modal-overlay {
-            display: none; /* JS ile flex yapılır */
+            display: none; 
             position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0; /* Ekranı tam kapla */
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); 
-            backdrop-filter: blur(5px);
+            top: 0; left: 0; right: 0; bottom: 0; 
+            width: 100vw; height: 100vh; /* Viewport'a göre tam ekran */
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
             z-index: 10001; 
-            justify-content: center; 
-            align-items: center; /* Dikey ve yatay tam orta */
+            justify-content: center; align-items: center; /* Tam orta */
         }
         .name-modal-content { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 16px; 
-            width: 90%; 
-            max-width: 350px; 
-            text-align: center; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
-            margin: auto; /* Garanti ortalama */
+            background: white; padding: 30px; border-radius: 16px; 
+            width: 90%; max-width: 350px; text-align: center; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); margin: auto; 
         }
 
-        /* --- MOBILE RESPONSIVE --- */
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             html, body { padding: 5px; }
             .app-header { flex-direction: column; padding: 15px; height: auto; }
@@ -276,7 +270,6 @@
             
             h2 { font-size: 1.4rem; }
             
-            /* Rapor Mobil */
             .report-grid { grid-template-columns: 1fr; padding: 20px; }
             .report-header { padding: 20px; }
             .report-meta { padding: 15px 20px; flex-direction: column; gap: 5px; }
@@ -459,7 +452,7 @@
                         </div>
                         <button class="btn btn-secondary" onclick="prevStep()" style="margin-top: 5px;">⬅️ Geri</button>
                         
-                        <button class="btn btn-secondary" style="margin-top: 5px; background:#f7fafc; color:#718096; border-color:#e2e8f0;" onclick="location.reload()">🔄 Yeni Test Başlat</button>
+                        <button class="btn btn-restart" onclick="location.reload()">🔄 Yeni Test Başlat</button>
                     </div>
                 </div>
 
