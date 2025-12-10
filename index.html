@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AntepDiyaBezite - Akıllı Cerrahi Asistanı</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #004d38;       /* Ana Yeşil */
+            --secondary: #008060;     /* Açık Yeşil */
+            --accent: #ff6b35;        /* Turuncu */
+            --dark: #2d3748;          /* Koyu Gri */
+            
+            /* BMI Renkleri */
+            --bmi-normal: #48bb78;
+            --bmi-over: #ecc94b;
+            --bmi-obese1: #ed8936;
+            --bmi-obese2: #dd6b20;
+            --bmi-morbid: #e53e3e;
+            --bmi-super: #822727;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        
+        /* 1. ANA YAPI DÜZELTMESİ (YAN YANA DURMA SORUNU ÇÖZÜMÜ) */
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background: transparent; /* Web sitesine entegre için şeffaf */
+            color: var(--dark);
+            min-height: 100vh;
+            display: block; /* Flex KALDIRILDI - Sorunun kaynağıydı */
+            padding: 10px;
+            margin: 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto; /* Ortalamayı sağlar */
+            background: transparent;
+            position: relative;
+        }
+
+        /* CARD STYLE */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.6);
+            position: relative;
+            min-height: 600px;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: rgba(255,255,255,0.95);
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-box {
+            background: white;
+            border: 1px solid #cbd5e0;
+            padding: 5px;
+            border-radius: 6px;
+            height: 80px;
+            width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-logo img, .header-team img { width: 100%; height: 100%; object-fit: contain; }
+        .header-info { text-align: center; flex: 1; }
+        .header-title { font-size: 1.4rem; font-weight: 900; color: var(--primary); line-height: 1.1; }
+        .header-slogan { font-size: 0.75rem; color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+        /* CONTENT AREA */
+        .content-area { padding: 30px; }
+        
+        /* INPUTS & SLIDERS */
+        .input-sync-wrapper { 
+            display: flex; align-items: center; gap: 15px; margin: 15px 0; 
+            background: #f7fafc; padding: 15px; border-radius: 12px; border: 1px solid #edf2f7; 
+        }
+        .number-input { 
+            width: 80px; padding: 8px; font-size: 1.3rem; font-weight: 700; 
+            color: var(--primary); border: 2px solid #e2e8f0; border-radius: 10px; text-align: center; 
+        }
+        input[type="range"] { flex: 1; height: 6px; background: #cbd5e0; border-radius: 5px; }
+        input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; background: var(--primary); border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-appearance: none;}
+
+        /* BUTTONS */
+        .nav-buttons { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
+        .btn {
+            padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.2s; border: none; display: flex; align-items: center;
+            justify-content: center; gap: 8px; user-select: none; text-align: center;
+            min-height: 48px;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--primary); color: white; flex: 2; box-shadow: 0 4px 12px rgba(0,77,56,0.15); }
+        .btn-primary:hover { background: var(--secondary); }
+        .btn-secondary { background: white; color: #4a5568; border: 2px solid #e2e8f0; flex: 1; }
+        .btn-secondary:hover { background: #f7fafc; border-color: #cbd5e0; }
+        
+        .btn-revision { background: var(--accent) !important; color: white !important; }
+        
+        .btn-whatsapp { 
+            background: var(--accent); color: white; border: 2px solid #1a202c; 
+            box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3); font-weight: 700;
+        }
+
+        /* CHECKBOX GRID */
+        .checkbox-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 12px; 
+        }
+        
+        .cb-item input { display: none; }
+        .cb-item label {
+            display: flex; align-items: center; gap: 10px; padding: 15px; 
+            border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; 
+            transition: all 0.2s; font-weight: 500; background: white; 
+            height: 100%; font-size: 0.95rem; line-height: 1.3;
+        }
+        .cb-item label svg { width: 28px; height: 28px; flex-shrink: 0; fill: #718096; }
+        .cb-item input:checked + label { border-color: var(--primary); background: #f0fdf9; color: var(--primary); font-weight: 700; }
+        .cb-item input:checked + label svg { fill: var(--primary); }
+
+        /* BMI VISUALIZATION */
+        .bmi-display-box { text-align: center; padding: 15px; border-radius: 12px; color: white; margin-bottom: 20px; transition: background 0.5s ease; }
+        .bmi-val-large { font-size: 2.8rem; font-weight: 900; line-height: 1; }
+        .bmi-status-text { font-size: 1.1rem; font-weight: 600; opacity: 0.95; margin-top: 5px;}
+        .bg-normal { background: var(--bmi-normal); }
+        .bg-over { background: var(--bmi-over); color: #2d3748; } 
+        .bg-obese1 { background: var(--bmi-obese1); }
+        .bg-obese2 { background: var(--bmi-obese2); }
+        .bg-morbid { background: var(--bmi-morbid); }
+        .bg-super { background: var(--bmi-super); }
+
+        /* TEXT STYLES */
+        h2 { font-size: 1.6rem; margin-bottom: 10px; color: var(--primary); font-weight: 800; }
+        p { font-size: 1rem; color: #4a5568; line-height: 1.5; margin-bottom: 20px; }
+        
+        .psycho-text {
+            background: #fffaf0; border-left: 4px solid var(--accent); padding: 15px; 
+            border-radius: 0 10px 10px 0; font-size: 0.95rem; font-style: italic; color: #4a5568; margin: 20px 0;
+        }
+
+        .summary-box {
+            background: #f0fdf9; border: 2px solid var(--primary); border-radius: 16px; 
+            padding: 20px; margin-bottom: 20px;
+        }
+        .summary-box h3 { color: var(--accent); font-size: 0.9rem; margin: 0; text-transform: uppercase; }
+        .summary-box h2 { color: var(--primary); font-size: 1.5rem; margin: 5px 0 10px 0; line-height: 1.2; }
+        
+        /* 2. MODAL DÜZELTMESİ (BUZLU CAM & TAM ORTALAMA) */
+        .modal-overlay {
+            display: none; 
+            position: fixed; /* Ekranı kaplar, kaymaz */
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1); /* Çok hafif beyaz fon */
+            backdrop-filter: blur(15px); /* BUZLU CAM EFEKTİ */
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 10000; /* En üstte */
+            padding: 10px; 
+            overflow-y: auto; 
+            align-items: flex-start; /* İçerik uzunsa yukarıdan başlasın */
+            justify-content: center; /* Yatay ortala */
+        }
+        
+        .modal-content {
+            background: white; 
+            width: 100%; 
+            max-width: 800px; /* A4 Genişliği */
+            border-radius: 12px; 
+            margin: 40px auto; 
+            position: relative; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        /* RAPOR İÇ BOŞLUKLARI (METİN KESİLMESİNİ ENGELLER) */
+        .report-header { background: #fff; padding: 30px 40px; border-bottom: 4px solid var(--primary); border-radius: 12px 12px 0 0;}
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 30px 40px; }
+        .r-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; word-wrap: break-word; } /* Metin taşmasını önler */
+        .r-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 10px; }
+        .r-card p { font-size: 0.9rem; margin: 0; }
+
+        .rc-1 { border-left: 4px solid var(--primary); } .rc-1 h4 { color: var(--primary); }
+        .rc-2 { border-left: 4px solid var(--secondary); background: #f0fdf9; } .rc-2 h4 { color: var(--secondary); }
+        .rc-3 { border-left: 4px solid #3182ce; } .rc-3 h4 { color: #3182ce; }
+        .rc-4 { border-left: 4px solid #d69e2e; background: #fffaf0; } .rc-4 h4 { color: #d69e2e; }
+        .rc-5 { border-left: 4px solid var(--accent); } .rc-5 h4 { color: var(--accent); }
+        .rc-6 { border-left: 4px solid #718096; } .rc-6 h4 { color: #718096; }
+
+        .report-footer { padding: 20px 40px; background: #f7fafc; border-top: 1px solid #e2e8f0; font-size: 0.75rem; color: #718096; text-align: center; border-radius: 0 0 12px 12px;}
+        
+        /* İSİM GİRME PENCERESİ */
+        .name-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+            z-index: 10001; justify-content: center; align-items: center;
+        }
+        .name-modal-content { background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+        /* --- MOBILE RESPONSIVE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            html, body { padding: 5px; }
+            .app-header { flex-direction: column; padding: 15px; height: auto; }
+            .header-box { width: 100%; height: 70px; margin-bottom: 10px; }
+            .header-info { margin-bottom: 10px; }
+            .content-area { padding: 20px 15px; }
+            
+            .checkbox-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .cb-item label { padding: 12px; font-size: 0.85rem; flex-direction: column; text-align: center; justify-content: center; }
+            
+            .nav-buttons { flex-direction: column-reverse; gap: 10px; }
+            .btn { width: 100%; font-size: 1rem; padding: 14px; }
+            
+            h2 { font-size: 1.4rem; }
+            
+            /* Mobilde Rapor Düzeltmesi */
+            .report-grid { grid-template-columns: 1fr; padding: 20px; }
+            .report-header { padding: 20px; }
+            .report-header .header-flex { flex-direction: column; gap: 10px; text-align: center; }
+            .report-header .header-flex div { text-align: center !important; }
+            .report-meta { padding: 15px 20px; flex-direction: column; gap: 5px; }
+            .modal-content { margin: 10px 0; border-radius: 8px; }
+        }
+        
+        @media print {
+            body * { visibility: hidden; }
+            .modal-content, .modal-content * { visibility: visible; }
+            .modal-overlay { position: absolute; left: 0; top: 0; padding: 0; display: block; background: white; }
+            .modal-content { margin: 0; box-shadow: none; border: none; width: 100%; }
+            .nav-buttons { display: none !important; }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <audio id="sndClick" src="data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="></audio>
+
+    <div class="name-modal-overlay" id="nameModal">
+        <div class="name-modal-content">
+            <h3 style="color: var(--primary); margin-bottom: 10px;">Raporunuz Hazırlanıyor</h3>
+            <p style="font-size:0.9rem; color:#666; margin-bottom: 15px;">Size özel rapor için lütfen adınızı giriniz.</p>
+            <input type="text" id="pdfPatientName" placeholder="Adınız Soyadınız" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:10px; margin-bottom:15px; text-align:center; font-size:1rem;">
+            <button class="btn btn-primary" style="width:100%" onclick="finalizeReport()">Raporu İndir</button>
+            <button class="btn btn-secondary" style="width:100%; margin-top:10px;" onclick="document.getElementById('nameModal').style.display='none'">Vazgeç</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="app-header">
+                <div class="header-box header-logo">
+                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="AntepDiyaBezite">
+                </div>
+                <div class="header-info">
+                    <div class="header-title">AntepDiyaBezite<br>Cerrahi Asistanı</div>
+                    <div class="header-slogan">BİRLİKTE BAŞARABİLİRİZ</div>
+                </div>
+                <div class="header-box header-team">
+                    <img src="https://static.wixstatic.com/media/790e49_cfe01e86e121474b82160a5c44c89476~mv2.png" alt="Dr. Mehmet Kaplan">
+                </div>
+            </div>
+
+            <div class="content-area">
+                
+                <div id="step1" class="step-section">
+                    <h2 style="color: var(--primary);">Hoş Geldiniz</h2>
+                    <p>Merhaba, ben Doç. Dr. Mehmet Kaplan'ın dijital asistanıyım. Sağlık yolculuğunuzda size en doğru haritayı çizmek için buradayım.</p>
+                    <h3 style="margin-bottom: 15px; font-size:1rem; color:#2d3748;">Daha önce obezite cerrahisi geçirdiniz mi?</h3>
+                    <div class="checkbox-grid">
+                        <div class="cb-item">
+                            <input type="radio" name="revision" id="revNo" onchange="handleRevision(false)">
+                            <label for="revNo"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Hayır, ilk kez</span></label>
+                        </div>
+                        <div class="cb-item">
+                            <input type="radio" name="revision" id="revYes" onchange="handleRevision(true)">
+                            <label for="revYes"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 2h2v5h5v2h-5v5h-2v-5H7v-2h5V5z"/></svg><span>Evet, oldum</span></label>
+                        </div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-primary" id="btnStart" disabled onclick="nextStep()">Analize Başla →</button>
+                    </div>
+                </div>
+
+                <div id="step2" class="step-section hidden">
+                    <h2 style="color: var(--primary);">Fiziksel Profil</h2>
+                    <div id="bmiBox" class="bmi-display-box bg-normal">
+                        <div class="bmi-val-large" id="bmiValDisplay">00.0</div>
+                        <div class="bmi-status-text" id="bmiStatusDisplay">Veri Bekleniyor...</div>
+                    </div>
+                    <label>Yaşınız:</label>
+                    <div class="input-sync-wrapper">
+                        <input type="range" min="16" max="75" value="30" oninput="syncInput('age', this.value)">
+                        <input type="number" id="input_age" class="number-input" value="30" onchange="syncInput('age', this.value)">
+                    </div>
+                    <label>Boyunuz (cm):</label>
+                    <div class="input-sync-wrapper">
+                        <input type="range" min="145" max="210" value="170" oninput="syncInput('height', this.value)">
+                        <input type="number" id="input_height" class="number-input" value="170" onchange="syncInput('height', this.value)">
+                    </div>
+                    <label>Kilonuz (kg):</label>
+                    <div class="input-sync-wrapper">
+                        <input type="range" min="50" max="250" value="90" oninput="syncInput('weight', this.value)">
+                        <input type="number" id="input_weight" class="number-input" value="90" onchange="syncInput('weight', this.value)">
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep()">← Geri</button>
+                        <button class="btn btn-primary" onclick="nextStep()">Devam Et →</button>
+                    </div>
+                </div>
+
+                <div id="step3" class="step-section hidden">
+                    <h2 style="color: var(--primary);">Diyet Geçmişi</h2>
+                    <div class="checkbox-grid">
+                        <div class="cb-item">
+                            <input type="radio" name="diet" id="dietYes" onchange="data.diet='yes'">
+                            <label for="dietYes"><svg viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></svg><span>Denedim (Yo-Yo)</span></label>
+                        </div>
+                        <div class="cb-item">
+                            <input type="radio" name="diet" id="dietNo" onchange="data.diet='no'">
+                            <label for="dietNo"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V3h-1.02v2.05H7.5V3H6.48v2.05H1.46L3.13 21.5c.1.83.79 1.49 1.64 1.49h1.63v-5h11.66v5z"/></svg><span>Pek Denemedim</span></label>
+                        </div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep()">← Geri</button>
+                        <button class="btn btn-primary" onclick="nextStep()">Devam Et →</button>
+                    </div>
+                </div>
+
+                <div id="step4" class="step-section hidden">
+                    <h2 style="color: var(--primary);">Güvence</h2>
+                    <div class="checkbox-grid">
+                        <div class="cb-item"><input type="radio" name="insurance" id="insSgk" onchange="data.insurance='sgk'"><label for="insSgk"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>SGK / Emekli</label></div>
+                        <div class="cb-item"><input type="radio" name="insurance" id="insPrivate" onchange="data.insurance='private'"><label for="insPrivate"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Özel Sigorta</label></div>
+                        <div class="cb-item"><input type="radio" name="insurance" id="insPaid" onchange="data.insurance='paid'"><label for="insPaid"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg>Ücretli / Yok</label></div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep()">← Geri</button>
+                        <button class="btn btn-primary" onclick="nextStep()">Devam Et →</button>
+                    </div>
+                </div>
+
+                <div id="step5" class="step-section hidden">
+                    <h2 style="color: var(--primary);">Sağlık Durumu</h2>
+                    <p style="margin-bottom:15px;">Varsa mevcut rahatsızlıklarınızı seçiniz.</p>
+                    <div class="checkbox-grid">
+                        <div class="cb-item"><input type="checkbox" id="c_dia"><label for="c_dia"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.88 15.76V19h-1.75v-1.29c-.74-.18-2.39-.77-3.02-2.96l1.65-.67c.06.22.58 2.09 2.4 2.09.93 0 1.98-.48 1.98-1.61 0-.96-.7-1.46-2.28-2.03-1.1-.39-3.35-1.03-3.35-3.31 0-.1.01-2.4 2.62-2.96V5h1.75v1.24c1.84.32 2.51 1.79 2.66 2.23l-1.58.67c-.11-.35-.59-1.34-1.9-1.34-.7 0-1.81.37-1.81 1.39 0 .95.86 1.31 2.64 1.9 2.4.83 3.01 2.05 3.01 3.45 0 2.63-2.5 3.13-3.02 3.22z"/></svg>Tip 2 Diyabet</label></div>
+                        <div class="cb-item"><input type="checkbox" id="c_hyp"><label for="c_hyp"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Tansiyon</label></div>
+                        <div class="cb-item"><input type="checkbox" id="c_apn"><label for="c_apn"><svg viewBox="0 0 24 24"><path d="M19 7h-8v6h8V7zm2-2H9v10h12V5zM7 15h10v2H7v-2zm-4 4h10v2H3v-2z"/></svg>Uyku Apnesi</label></div>
+                        <div class="cb-item"><input type="checkbox" id="c_ref"><label for="c_ref"><svg viewBox="0 0 24 24"><path d="M16.5 5c-1.54 0-3.04.99-3.56 2.36h-1.87C10.54 5.99 9.04 5 7.5 5 5.5 5 4 6.5 4 8.5c0 2.89 3.14 5.74 7.9 10.05l.1.1.1-.1C16.86 14.24 20 11.39 20 8.5c0-2-1.5-1.5-3.5-3.5z"/></svg>Reflü</label></div>
+                        <div class="cb-item"><input type="checkbox" id="c_pco"><label for="c_pco"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>PCOS</label></div>
+                        <div class="cb-item"><input type="checkbox" id="c_joi"><label for="c_joi"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></svg>Eklem Ağrısı</label></div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep()">← Geri</button>
+                        <button class="btn btn-primary" onclick="processAnalysis()">Devam Et →</button>
+                    </div>
+                </div>
+
+                <div id="step6" class="step-section hidden">
+                    <h2 style="color: var(--primary); text-align:center;">Analiz Tamamlandı</h2>
+                    <div style="text-align:center; margin-bottom: 20px;">
+                        <div style="font-size:2.5rem; font-weight:900; color:var(--primary);" id="res_bmi">00.0</div>
+                        <div style="font-size:1rem; font-weight:600; color:#718096;" id="res_status">-</div>
+                    </div>
+                    <div class="psycho-text" id="res_psycho_text">Analiz ediliyor...</div>
+                    <div class="nav-buttons" style="flex-direction: column;">
+                        <button class="btn btn-primary" onclick="goToCouncil()">Özet Bilimsel Konsey Raporuna Git ➡️</button>
+                        <div class="nav-buttons" style="margin-top:10px;">
+                            <button class="btn btn-secondary" onclick="openNameModal()" style="border-color:var(--accent); color:var(--accent);">📥 Detaylı Raporu İndir</button>
+                            <button class="btn btn-secondary" onclick="prevStep()">⬅️ Geri</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step7" class="step-section hidden">
+                    <h2 style="color: var(--primary);">Bilimsel Konsey Önerisi</h2>
+                    <p>Uluslararası kılavuzlar (ASMBS/IFSO 2022) ve verileriniz ışığında oluşturulan yol haritası:</p>
+                    <div class="summary-box">
+                        <h3 id="sum_treatment_sub">ÖNERİLEN YAKLAŞIM</h3>
+                        <h2 id="sum_treatment_title">-</h2>
+                        <p id="sum_treatment_reason">-</p>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                            <strong>Tedavi Alternatifleri ve Gerekçe:</strong>
+                            <p id="sum_pros" style="font-size: 0.9rem; margin-top: 5px;">-</p>
+                        </div>
+                    </div>
+                    <div class="nav-buttons" style="flex-direction: column;">
+                        <button class="btn btn-primary" onclick="openNameModal()">📄 Detaylı Rapor ve İndir</button>
+                        <div class="nav-buttons" style="margin-top: 5px;">
+                            <button class="btn btn-whatsapp" onclick="window.open('https://wa.me/905050118899', '_blank')">💬 WhatsApp Danışma</button>
+                            <button class="btn btn-secondary" onclick="window.open('https://via.placeholder.com/1?text=Randevu', '_blank')">📅 Randevu Al</button>
+                        </div>
+                        <button class="btn btn-secondary" onclick="prevStep()" style="margin-top: 5px;">⬅️ Geri</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reportModal" style="display:none;">
+        <div class="modal-content">
+            <div class="report-header">
+                <div class="header-flex" style="display:flex; justify-content:space-between; align-items:center;">
+                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="Logo" style="height:40px;">
+                    <div style="text-align: right;">
+                        <h1 style="font-size: 1.1rem; color: var(--primary); margin:0;">KONSÜLTASYON RAPORU</h1>
+                        <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 2px; font-weight:700;">BİRLİKTE BAŞARABİLİRİZ</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-meta">
+                <div>Sayın: <strong id="rpt_name"></strong></div>
+                <div>Profil: <strong id="rpt_profile"></strong></div>
+                <div>Tarih: <strong id="rpt_date"></strong></div>
+            </div>
+
+            <div class="konsey-highlight">
+                <span class="konsey-badge">BİLİMSEL KONSEY KARARI</span>
+                <h2 id="rpt_konsey_title" style="color: var(--primary); margin: 10px 0; font-size:1.4rem;">-</h2>
+                <p id="rpt_konsey_reason" style="color: #4a5568;">-</p>
+            </div>
+
+            <div class="report-grid">
+                <div class="r-card rc-1"><h4>1. DETAYLI GEREKÇE & SEÇENEKLER</h4><p id="rpt_detail_reason">-</p></div>
+                <div class="r-card rc-2"><h4>2. KİLO PROJEKSİYONU</h4><p>Beklenen Kayıp: <strong id="rpt_ewl"></strong><br>Hedef: <strong id="rpt_target"></strong><br><span style="font-size:0.75rem; opacity:0.7">*Dünya ortalamaları.</span></p></div>
+                <div class="r-card rc-3"><h4>3. İYİLEŞME SÜRECİ</h4><p>🏥 Taburcu: <strong>3. Gün</strong><br>💼 İşe Dönüş: <strong>5-7 Gün</strong><br>🏃 Sosyal Hayat: <strong>2. Hafta</strong></p></div>
+                <div class="r-card rc-4"><h4>4. MALİYET ANALİZİ (SGK & SUT)</h4><p id="rpt_finance">-</p></div>
+                <div class="r-card rc-5"><h4>5. SAĞLIK KAZANIMLARI</h4><p id="rpt_gains">-</p></div>
+                <div class="r-card rc-6"><h4>6. TAKİP VE DESTEK</h4><p>Ameliyat araçtır. Başarı için;<br>• Ömür boyu vitamin<br>• 1 yıl diyetisyen kontrolü<br>• Aktif yaşam <strong>şarttır.</strong></p></div>
+            </div>
+
+            <div class="report-footer">
+                <p><strong>YASAL UYARI:</strong> Bu rapor, simülasyon amaçlıdır ve kesin tıbbi tanı/tedavi önerisi yerine geçmez. Nihai karar fiziksel muayene ve heyet değerlendirmesi sonrası verilir.</p>
+                <p><strong>REFERANSLAR:</strong> 1. ASMBS/IFSO Guidelines 2022. 2. Sağlık Uygulama Tebliği (SUT) 2024. 3. TEMD Obezite Kılavuzu.</p>
+                <p style="margin-top:10px; font-weight:700;">Doç. Dr. Mehmet Kaplan ve Ekibi</p>
+            </div>
+
+            <div class="nav-buttons" style="padding: 15px; background: #eee; border-top:1px solid #ddd; justify-content:center; border-radius:0 0 12px 12px;">
+                <button class="btn btn-secondary" onclick="document.getElementById('reportModal').style.display='none'">Kapat</button>
+                <button class="btn btn-primary" onclick="window.print()">🖨️ PDF İndir / Yazdır</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        let step = 1;
+        let data = { revision: null, age: 30, height: 170, weight: 90, bmi: 31.1, diet: null, insurance: null, comorbidities: [], name: '' };
+        
+        // --- AUDIO ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            if (type === 'click') {
+                osc.frequency.value = 600; gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            }
+        }
+
+        // --- NAV ---
+        function showStep(s) {
+            document.querySelectorAll('.step-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step' + s).classList.remove('hidden');
+            window.scrollTo(0,0);
+            step = s;
+        }
+
+        function nextStep() {
+            playSound('click');
+            if(step===1 && data.revision===null) return alert("Seçim yapınız.");
+            if(step===3 && data.diet===null) return alert("Seçim yapınız.");
+            if(step===4 && data.insurance===null) return alert("Seçim yapınız.");
+            step++;
+            if(step===2) updateBMI();
+            showStep(step);
+        }
+
+        function prevStep() {
+            playSound('click');
+            if(step > 1) { step--; showStep(step); }
+        }
+
+        // --- STEPS LOGIC ---
+        function handleRevision(isRev) {
+            data.revision = isRev;
+            const btn = document.getElementById('btnStart');
+            btn.disabled = false;
+            if(isRev) {
+                btn.innerHTML = "Revizyon Simülatörü →";
+                btn.className = "btn btn-revision";
+                btn.onclick = function() { alert("Revizyon simülatörüne yönlendiriliyorsunuz..."); };
+            } else {
+                btn.innerHTML = "Analize Başla →";
+                btn.className = "btn btn-primary";
+                btn.onclick = nextStep;
+            }
+        }
+
+        function syncInput(k, v) {
+            data[k] = parseInt(v);
+            document.querySelector(`input[type="range"][oninput*="'${k}'"]`).value = v;
+            document.getElementById(`input_${k}`).value = v;
+            updateBMI();
+        }
+
+        function updateBMI() {
+            const h = data.height/100;
+            data.bmi = (data.weight / (h*h)).toFixed(1);
+            const b = parseFloat(data.bmi);
+            const box = document.getElementById('bmiBox');
+            let s = "";
+            document.getElementById('bmiValDisplay').innerText = data.bmi;
+            box.className = "bmi-display-box"; 
+            if(b<25) { box.classList.add('bg-normal'); s="Normal"; }
+            else if(b<30) { box.classList.add('bg-over'); s="Fazla Kilolu"; }
+            else if(b<35) { box.classList.add('bg-obese1'); s="1. Derece Obezite"; }
+            else if(b<40) { box.classList.add('bg-obese2'); s="2. Derece Obezite"; }
+            else { box.classList.add('bg-morbid'); s="Morbid Obezite"; }
+            document.getElementById('bmiStatusDisplay').innerText = s;
+        }
+
+        function processAnalysis() {
+            playSound('click');
+            data.comorbidities = [];
+            if(document.getElementById('c_dia').checked) data.comorbidities.push("Diyabet");
+            if(document.getElementById('c_hyp').checked) data.comorbidities.push("Tansiyon");
+            if(document.getElementById('c_apn').checked) data.comorbidities.push("Uyku Apnesi");
+            if(document.getElementById('c_ref').checked) data.comorbidities.push("Reflü");
+            if(document.getElementById('c_pco').checked) data.comorbidities.push("PCOS");
+            if(document.getElementById('c_joi').checked) data.comorbidities.push("Eklem Ağrısı");
+
+            document.getElementById('res_bmi').innerText = data.bmi;
+            document.getElementById('res_status').innerText = document.getElementById('bmiStatusDisplay').innerText;
+            
+            // Empatik Metin
+            const bmi = parseFloat(data.bmi);
+            let text = "";
+            if(bmi < 30) text = "Şu an cerrahi sınırların altındasınız. Bu harika! Erken önlem ve yaşam tarzı değişiklikleri ile gelecekteki riskleri sıfırlayabilirsiniz.";
+            else if (bmi < 35) {
+                if(data.comorbidities.length === 0) text = "Henüz yandaş hastalığınız yok, bu büyük şans. Kilo alımı devam etmeden, cerrahi dışı yöntemlerle ideal kilonuza dönebilirsiniz.";
+                else text = "Kilonun ötesinde, metabolik hastalıklar sağlığınızı tehdit ediyor. Sadece zayıflamayı değil, sağlığınızı geri kazanmayı hedefliyoruz.";
+            } else if (bmi < 40) text = "Eklem ağrıları ve halsizliğin hayatınızı zorlaştırdığını biliyoruz. Vücudunuz yardım istiyor ve biz bu yükü birlikte kaldırmaya hazırız.";
+            else text = "Bu metabolik bir savaş ve defalarca denemenize rağmen sonuç alamamanız sizin suçunuz değil. Artık bu savaşta yalnız değilsiniz.";
+            
+            document.getElementById('res_psycho_text').innerText = text;
+            nextStep();
+        }
+
+        function goToCouncil() {
+            generateTreatmentLogic();
+            step = 7;
+            showStep(7);
+        }
+
+        // --- SGK SUT & MEDICAL LOGIC ---
+        function generateTreatmentLogic() {
+            const bmi = parseFloat(data.bmi);
+            const hasRef = data.comorbidities.includes("Reflü");
+            const hasDia = data.comorbidities.includes("Diyabet");
+            const hasComorb = data.comorbidities.length > 0;
+            const dietHist = data.diet;
+            const insurance = data.insurance;
+            
+            let treat="", title="", reason="", pros="", detail="", ewl="", gains="", fin="";
+
+            // 1. TIBBİ ALGORİTMA
+            if(bmi < 30) {
+                treat = "Ameliyatsız Yöntemler";
+                title = "MİDE BALONU & MEDİKAL TEDAVİ";
+                reason = "VKİ değeriniz cerrahi için gerekli sınırın (30-35+) altındadır. Mide Balonu ve Medikal Beslenme en güvenli yoldur.";
+                pros = "1. Yutulabilir Mide Balonu. 2. GLP-1 Analog Tedavisi.";
+                detail = "VKİ 30 altında cerrahi önerilmez. Mide balonu tokluk hissi yaratır.";
+                ewl = "%15-20 (Toplam Kilo)";
+                gains = "İnsülin direncinin kırılması, Enerjik beden.";
+            } else if (bmi < 35) {
+                if(!hasComorb) {
+                    treat = "Ameliyatsız Yöntemler (Öncelikli)";
+                    title = "MİDE BALONU & YAŞAM TARZI";
+                    reason = "VKİ 30-35 aralığında ve yandaş hastalık yok. Kılavuzlara göre cerrahi 'ilk seçenek' değildir.";
+                    pros = "1. Endoskopik Mide Balonu. 2. Medikal Diyet Programı.";
+                    detail = "Yandaş hastalığı olmayan Evre 1 obezitede öncelik balon ve ilaç tedavisidir.";
+                    ewl = "%20-25 (Toplam Kilo)";
+                    gains = "Obezitenin ilerlemesinin durdurulması.";
+                } else {
+                    treat = "Metabolik Cerrahi Düşünülebilir";
+                    title = "KİŞİYE ÖZEL METABOLİK CERRAHİ";
+                    reason = "VKİ 35 altı olsa da, Diyabet/Tansiyon varlığı sizi 'Metabolik Cerrahi Adayı' yapar (ASMBS 2022).";
+                    pros = "1. Transit Bipartisyon. 2. Tüp Mide.";
+                    detail = "Amaç sadece kilo değil, hastalıkları tedavi etmektir.";
+                    ewl = "%60-70 (Fazla Kilo)";
+                    gains = "Hastalıkların remisyonu, ilaçsız yaşam.";
+                }
+            } else { // BMI >= 35
+                if(dietHist === 'no' && bmi < 40) {
+                     treat = "Cerrahi Hazırlık (Diyet Önerisi)";
+                     title = "CERRAHİ ÖNCESİ HAZIRLIK";
+                     reason = "Fiziksel kriterler uygun (VKİ>35). Ancak diyet geçmişi olmadığı için kısa süreli diyet denemesi önerilir.";
+                     pros = "Cerrahiye metabolik hazırlık.";
+                     detail = "Tüp Mideye uygunsunuz ancak öncesinde beslenme düzeni oturmalıdır.";
+                     ewl = "%60-70";
+                     gains = "Kalıcı kilo kontrolü.";
+                } else {
+                    if(hasRef) {
+                        treat = "Altın Standart: Gastrik Bypass";
+                        title = "RNY GASTRİK BYPASS";
+                        reason = "Reflü şikayetiniz olduğu için Tüp Mide reflüyü artırabilir. Sizin için 'Altın Standart' Bypass'tır.";
+                        pros = "1. RNY Gastrik Bypass. 2. Tüp Mide + Herni Onarımı.";
+                        detail = "Hem reflüyü tedavi eder hem güçlü kilo kaybı sağlar.";
+                        ewl = "%70-80 (Fazla Kilo)";
+                        gains = "Reflünün geçmesi, Kalıcı zayıflama.";
+                    } else if (hasDia) {
+                        treat = "Güçlü Aday: Metabolik Cerrahi";
+                        title = "TRANSİT BİPARTİSYON / BYPASS";
+                        reason = "Diyabet varlığında, ince bağırsağı aktive eden Metabolik Cerrahi daha üstündür.";
+                        pros = "1. Transit Bipartisyon. 2. Gastrik Bypass.";
+                        detail = "İnsülin direncini kırar, diyabetten %90 kurtulma şansı verir.";
+                        ewl = "%80 (Fazla Kilo)";
+                        gains = "Diyabet remisyonu, Organ koruması.";
+                    } else {
+                        treat = "Uygun Aday: Tüp Mide";
+                        title = "TÜP MİDE (SLEEVE)";
+                        reason = "Reflü veya ileri diyabet yok. Anatomiyi en az bozan Tüp Mide en doğru başlangıçtır.";
+                        pros = "1. Tüp Mide. 2. Mini-Gastrik Bypass.";
+                        detail = "Midenin iştah merkezi çıkarılır. En sık yapılan güvenli ameliyattır.";
+                        ewl = "%70 (Fazla Kilo)";
+                        gains = "Hareket artışı, Özgüven.";
+                    }
+                }
+            }
+
+            // 2. SGK SUT FİNANSAL MANTIK
+            if (insurance === 'sgk') {
+                if (bmi < 35) {
+                    fin = "Mevcut SUT kuralları gereği VKİ 35'in altında SGK desteği yoktur. Ödemenin tamamı hasta tarafından karşılanır.";
+                } else if (bmi >= 35 && bmi < 40) {
+                    if (hasComorb) {
+                        fin = "VKİ 35-40 aralığında ve yandaş hastalığınız (Diyabet/Tansiyon vb.) olduğu için SGK kapsamındasınız. Özel hastanemizde SGK payı düşülerek size avantajlı 'İndirimli Fark Ücreti' uygulanacaktır.";
+                    } else {
+                        fin = "VKİ 35-40 aralığında olsanız bile, yandaş hastalığınız olmadığı için sistem sizi 'Estetik' sınıfa dahil eder ve SGK ödemesi çıkmaz. Ancak kurul raporu ile hastalık belgelenirse indirim hakkı doğar.";
+                    }
+                } else { // BMI >= 40
+                    fin = "VKİ 40 üzeri olduğu için 'Morbid Obezite' tanısıyla doğrudan SGK kapsamındasınız. Özel hastanemizde işlem yapıldığında, toplam maliyetten SGK ödemesi düşülerek avantajlı indirimlerden yararlandırılırsınız.";
+                }
+            } else if (insurance === 'private') {
+                fin = "Özel Sigortaların çoğu obezite cerrahisini kapsam dışı tutar. Ancak poliçenizde 'Metabolik Cerrahi' teminatı varsa veya hayati risk oluşmuşsa provizyon alınabilir. Koordinatörümüz poliçenizi inceleyecektir.";
+            } else {
+                fin = "Kliniğimiz, anlaşmalı bankalar aracılığıyla size özel taksit ve ödeme planları sunmaktadır.";
+            }
+
+            // UI Update
+            document.getElementById('sum_treatment_sub').innerText = treat;
+            document.getElementById('sum_treatment_title').innerText = title;
+            document.getElementById('sum_treatment_reason').innerText = reason;
+            document.getElementById('sum_pros').innerText = pros;
+
+            // Report Update
+            document.getElementById('rpt_konsey_title').innerText = title;
+            document.getElementById('rpt_konsey_reason').innerText = reason;
+            document.getElementById('rpt_detail_reason').innerText = detail;
+            document.getElementById('rpt_ewl').innerText = ewl;
+            
+            const idealW = 22 * (data.height/100)**2;
+            const excessW = data.weight - idealW;
+            const loss = excessW * (parseInt(ewl.substr(1,2))/100);
+            document.getElementById('rpt_target').innerText = `${Math.round(data.weight - loss - 5)}kg - ${Math.round(data.weight - loss + 5)}kg`;
+            
+            document.getElementById('rpt_finance').innerText = fin;
+            document.getElementById('rpt_gains').innerText = gains;
+        }
+
+        function openNameModal() { generateTreatmentLogic(); document.getElementById('nameModal').style.display = 'flex'; }
+
+        function finalizeReport() {
+            const name = document.getElementById('pdfPatientName').value.trim();
+            if(!name) return alert("İsim giriniz.");
+            data.name = name;
+            document.getElementById('rpt_name').innerText = name;
+            document.getElementById('rpt_date').innerText = new Date().toLocaleDateString('tr-TR');
+            document.getElementById('rpt_profile').innerText = `VKİ: ${data.bmi}, Yaş: ${data.age}`;
+            document.getElementById('nameModal').style.display = 'none';
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
