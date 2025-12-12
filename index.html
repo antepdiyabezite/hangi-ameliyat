@@ -11,10 +11,10 @@
     
     <style>
         :root {
-            --primary: #004d38;       /* Ana Yeşil */
-            --secondary: #008060;     /* Açık Yeşil */
-            --accent: #ff6b35;        /* Turuncu */
-            --dark: #2d3748;          /* Koyu Gri */
+            --primary: #004d38;
+            --secondary: #008060;
+            --accent: #ff6b35;
+            --dark: #2d3748;
             
             /* BMI Renkleri */
             --bmi-normal: #48bb78;
@@ -27,11 +27,11 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
-        /* 1. SCROLLBAR GİZLEME (IFRAME İÇİN KRİTİK) */
-        ::-webkit-scrollbar { display: none; } /* Chrome/Safari/Opera */
-        html { -ms-overflow-style: none; scrollbar-width: none; } /* IE/Edge/Firefox */
+        /* SCROLLBAR GİZLEME */
+        ::-webkit-scrollbar { display: none; }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 2. ANA YAPI */
+        /* --- 1. GENEL YAPI (DESKTOP ÖNCELİKLİ) --- */
         html, body {
             font-family: 'Inter', sans-serif;
             background: transparent;
@@ -39,8 +39,8 @@
             min-height: 100vh;
             display: block;
             margin: 0;
-            padding: 10px; /* Kenar boşluğu */
-            overflow-x: hidden; /* Yatay taşmayı engelle */
+            font-size: 16px; 
+            padding: 20px;
         }
         
         .container {
@@ -51,7 +51,7 @@
             position: relative;
         }
 
-        /* CARD STYLE */
+        /* KART TASARIMI (DESKTOP: Ferah) */
         .card {
             background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
@@ -60,9 +60,10 @@
             border: 1px solid rgba(255,255,255,0.6);
             position: relative;
             min-height: 600px;
+            padding-bottom: 20px;
         }
 
-        /* HEADER */
+        /* HEADER (DESKTOP: Büyük Logolar) */
         .app-header {
             background: rgba(255,255,255,0.95);
             padding: 20px 30px;
@@ -77,7 +78,7 @@
             background: white;
             border: 1px solid #cbd5e0;
             padding: 5px;
-            border-radius: 6px;
+            border-radius: 8px;
             height: 80px;
             width: 140px;
             display: flex;
@@ -87,82 +88,86 @@
 
         .header-logo img, .header-team img { width: 100%; height: 100%; object-fit: contain; }
         .header-info { text-align: center; flex: 1; }
-        .header-title { font-size: 1.4rem; font-weight: 900; color: var(--primary); line-height: 1.1; }
-        .header-slogan { font-size: 0.75rem; color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
-
-        /* CONTENT AREA */
-        .content-area { padding: 30px; }
         
-        /* 3. KOMPAKT PROFİL KARTI (BOŞLUKLAR AZALTILDI) */
+        .header-title { font-size: 1.5rem; font-weight: 900; color: var(--primary); line-height: 1.1; }
+        .header-slogan { font-size: 0.8rem; color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+
+        /* İÇERİK ALANI (DESKTOP) */
+        .content-area { padding: 40px; }
+        
+        /* INPUT SLIDER (DESKTOP) */
         .input-sync-wrapper { 
-            display: flex; align-items: center; gap: 15px; 
-            margin: 8px 0; /* Azaltıldı (Eski: 15px) */
-            background: #f7fafc; 
-            padding: 10px 15px; /* Azaltıldı (Eski: 15px) */
-            border-radius: 12px; border: 1px solid #edf2f7; 
+            display: flex;
+            align-items: center; gap: 15px; 
+            margin: 15px 0; 
+            background: #f7fafc;
+            padding: 15px; 
+            border-radius: 12px;
+            border: 1px solid #edf2f7; 
         }
         .number-input { 
-            width: 80px; padding: 8px; font-size: 1.3rem; font-weight: 700; 
-            color: var(--primary); border: 2px solid #e2e8f0; border-radius: 10px; text-align: center; 
+            width: 80px;
+            padding: 10px; font-size: 1.3rem; font-weight: 700; 
+            color: var(--primary); border: 2px solid #e2e8f0; border-radius: 10px; text-align: center;
         }
-        input[type="range"] { flex: 1; height: 6px; background: #cbd5e0; border-radius: 5px; }
-        input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; background: var(--primary); border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-appearance: none;}
+        input[type="range"] { flex: 1; height: 6px; background: #cbd5e0; border-radius: 5px; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; background: var(--primary); border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-appearance: none; cursor: grab;}
 
-        /* BUTTONS */
-        .nav-buttons { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
+        /* BUTONLAR (DESKTOP: Büyük ve Tıklanabilir) */
+        .nav-buttons { display: flex; gap: 15px; margin-top: 30px; }
         .btn {
-            padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer;
             transition: all 0.2s; border: none; display: flex; align-items: center;
-            justify-content: center; gap: 8px; user-select: none; text-align: center;
-            min-height: 48px;
+            justify-content: center;
+            gap: 10px; user-select: none; text-align: center;
+            min-height: 50px;
         }
         .btn:active { transform: scale(0.97); }
         .btn-primary { background: var(--primary); color: white; flex: 2; box-shadow: 0 4px 12px rgba(0,77,56,0.15); }
-        .btn-primary:hover { background: var(--secondary); }
+        .btn-primary:hover { background: var(--secondary); transform: translateY(-2px); }
         
         .btn-secondary { 
-            background: white; color: var(--dark); border: 2px solid #a0aec0; flex: 1; font-weight: 700;
+            background: white;
+            color: var(--dark); border: 2px solid #a0aec0; flex: 1; font-weight: 700;
         }
         .btn-secondary:hover { background: #edf2f7; border-color: var(--primary); color: var(--primary); }
         
         .btn-revision { background: var(--accent) !important; color: white !important; }
-        
         .btn-whatsapp { 
-            background: var(--accent); color: white; border: 2px solid #1a202c; 
+            background: var(--accent);
+            color: white; border: 2px solid #1a202c; 
             box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3); font-weight: 700;
         }
-
-        /* 4. YENİ TEST BUTONU (CTA) */
         .btn-restart {
-            background: #2d3748; /* Koyu Gri/Siyah */
-            color: white;
-            border: 2px solid #1a202c;
-            width: 100%;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background: #2d3748; color: white; border: 2px solid #1a202c;
+            width: 100%; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .btn-restart:hover { background: #000; }
 
-        /* CHECKBOX GRID */
+        /* CHECKBOX GRID (DESKTOP: 3-4 Kolon, Ferah) */
         .checkbox-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 15px; 
         }
-        
         .cb-item input { display: none; }
         .cb-item label {
-            display: flex; align-items: center; gap: 10px; padding: 15px; 
+            display: flex;
+            align-items: center; gap: 12px; padding: 20px; 
             border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; 
-            transition: all 0.2s; font-weight: 500; background: white; 
-            height: 100%; font-size: 0.95rem; line-height: 1.3;
+            transition: all 0.2s; font-weight: 500;
+            background: white; 
+            height: 100%; font-size: 1rem; line-height: 1.4;
         }
-        .cb-item label svg { width: 28px; height: 28px; flex-shrink: 0; fill: #718096; }
-        .cb-item input:checked + label { border-color: var(--primary); background: #f0fdf9; color: var(--primary); font-weight: 700; }
+        .cb-item label svg { width: 32px; height: 32px; flex-shrink: 0; fill: #718096; }
+        .cb-item input:checked + label { border-color: var(--primary); background: #f0fdf9; color: var(--primary); font-weight: 700; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,77,56,0.1); }
         .cb-item input:checked + label svg { fill: var(--primary); }
 
-        /* BMI VISUALIZATION */
-        .bmi-display-box { text-align: center; padding: 15px; border-radius: 12px; color: white; margin-bottom: 20px; transition: background 0.5s ease; }
-        .bmi-val-large { font-size: 2.8rem; font-weight: 900; line-height: 1; }
-        .bmi-status-text { font-size: 1.1rem; font-weight: 600; opacity: 0.95; margin-top: 5px;}
+        /* BMI GÖRSEL (DESKTOP) */
+        .bmi-display-box { text-align: center; padding: 20px; border-radius: 12px; color: white; margin-bottom: 25px; transition: background 0.5s ease; }
+        .bmi-val-large { font-size: 3rem; font-weight: 900; line-height: 1; }
+        .bmi-status-text { font-size: 1.2rem; font-weight: 600; opacity: 0.95; margin-top: 5px;}
         .bg-normal { background: var(--bmi-normal); }
         .bg-over { background: var(--bmi-over); color: #2d3748; } 
         .bg-obese1 { background: var(--bmi-obese1); }
@@ -170,63 +175,67 @@
         .bg-morbid { background: var(--bmi-morbid); }
         .bg-super { background: var(--bmi-super); }
 
-        /* TEXT STYLES */
-        h2 { font-size: 1.6rem; margin-bottom: 10px; color: var(--primary); font-weight: 800; }
-        p { font-size: 1rem; color: #4a5568; line-height: 1.5; margin-bottom: 20px; }
+        /* METİNLER (DESKTOP) */
+        h2 { font-size: 1.8rem; margin-bottom: 15px; color: var(--primary); font-weight: 800; }
+        p { font-size: 1.1rem; color: #4a5568; line-height: 1.6; margin-bottom: 25px; }
         
         .psycho-text {
-            background: #fffaf0; border-left: 4px solid var(--accent); padding: 15px; 
-            border-radius: 0 10px 10px 0; font-size: 0.95rem; font-style: italic; color: #4a5568; margin: 20px 0;
+            background: #fffaf0;
+            border-left: 5px solid var(--accent); padding: 20px; 
+            border-radius: 0 12px 12px 0; font-size: 1.05rem; font-style: italic; color: #4a5568; margin: 25px 0;
         }
 
         .summary-box {
-            background: #f0fdf9; border: 2px solid var(--primary); border-radius: 16px; 
-            padding: 20px; margin-bottom: 20px;
+            background: #f0fdf9;
+            border: 2px solid var(--primary); border-radius: 16px; 
+            padding: 25px; margin-bottom: 25px;
         }
-        .summary-box h3 { color: var(--accent); font-size: 0.9rem; margin: 0; text-transform: uppercase; }
-        .summary-box h2 { color: var(--primary); font-size: 1.5rem; margin: 5px 0 10px 0; line-height: 1.2; }
+        .summary-box h3 { color: var(--accent); font-size: 0.95rem; margin: 0; text-transform: uppercase; }
+        .summary-box h2 { color: var(--primary); font-size: 1.6rem; margin: 5px 0 12px 0; line-height: 1.2; }
         
-        /* MODAL (BUZLU CAM) */
+        /* --- MODAL / RAPOR PENCERESİ --- */
         .modal-overlay {
-            display: none; 
+            display: none;
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            z-index: 10000; padding: 10px; 
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 10000; padding: 20px; 
             overflow-y: auto; 
-            align-items: flex-start; justify-content: center; 
+            align-items: flex-start; justify-content: center;
         }
         
         .modal-content {
-            background: white; width: 100%; max-width: 800px; 
-            border-radius: 12px; margin: 40px auto; position: relative; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.1);
+            background: white;
+            width: 100%; max-width: 750px; 
+            border-radius: 12px; 
+            margin: 20px auto; 
+            position: relative; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+            border: none;
         }
         
-        /* RAPOR HEADER */
         .report-header { 
-            background: #fff; padding: 30px 40px; 
+            background: #fff; padding: 30px; 
             border-bottom: 4px solid var(--primary); 
-            border-radius: 12px 12px 0 0; text-align: center; 
+            border-radius: 12px 12px 0 0; text-align: center;
         }
-        .report-header .header-content { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .report-header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 800; }
-        .report-header p { font-size: 0.8rem; color: var(--accent); letter-spacing: 2px; font-weight: 700; margin: 0; text-transform: uppercase; }
+        .report-header .header-content { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .report-header h1 { font-size: 1.5rem; color: var(--primary); margin: 0; font-weight: 800; }
+        .report-header p { font-size: 0.85rem; color: var(--accent); letter-spacing: 2px; font-weight: 700; margin: 0; text-transform: uppercase; }
 
-        /* HASTA BİLGİLERİ */
         .report-meta { 
-            background: #f7fafc; padding: 15px 40px; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem; 
+            background: #f7fafc; padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem; 
             display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; text-align: center; 
         }
-        .report-meta strong { color: var(--primary); }
+        .report-meta strong { color: var(--primary); font-weight: 800; }
 
-        .konsey-highlight { text-align: center; padding: 30px 40px; background: #fffdf0; border-bottom: 1px solid #e2e8f0; }
-        .konsey-badge { display: inline-block; background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+        .konsey-highlight { text-align: center; padding: 25px; background: #fffdf0; border-bottom: 1px solid #e2e8f0; }
+        .konsey-badge { display: inline-block; background: var(--primary); color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; }
         
-        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 30px 40px; }
-        .r-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; word-wrap: break-word; } 
-        .r-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 10px; }
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 30px; }
+        .r-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; word-wrap: break-word; } 
+        .r-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 8px; }
         .r-card p { font-size: 0.9rem; margin: 0; }
 
         .rc-1 { border-left: 4px solid var(--primary); } .rc-1 h4 { color: var(--primary); }
@@ -236,52 +245,146 @@
         .rc-5 { border-left: 4px solid var(--accent); } .rc-5 h4 { color: var(--accent); }
         .rc-6 { border-left: 4px solid #718096; } .rc-6 h4 { color: #718096; }
 
-        .report-footer { padding: 20px 40px; background: #f7fafc; border-top: 1px solid #e2e8f0; font-size: 0.75rem; color: #718096; text-align: center; border-radius: 0 0 12px 12px;}
+        /* FOOTER KÜÇÜLTME (GÜNCELLENDİ) */
+        .report-footer { 
+            padding: 20px; background: #f7fafc; border-top: 1px solid #e2e8f0; 
+            font-size: 0.6rem; /* Masaüstünde de küçültüldü */
+            color: #718096; text-align: center; border-radius: 0 0 12px 12px;
+        }
         
-        /* 5. POPUP HİZALAMA FIX (VH KULLANIMI) */
+        /* NAME MODAL (POZİSYON GÜNCELLENDİ) */
         .name-modal-overlay {
             display: none; 
             position: fixed; 
             top: 0; left: 0; right: 0; bottom: 0; 
-            width: 100vw; height: 100vh; /* Viewport'a göre tam ekran */
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
-            z-index: 10001; 
-            justify-content: center; align-items: center; /* Tam orta */
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2147483647; /* En üste zorla */
+            align-items: flex-start; /* Üste hizala */
+            padding-top: 100px; /* Üstten boşluk bırak */
+            justify-content: center;
         }
         .name-modal-content { 
             background: white; padding: 30px; border-radius: 16px; 
-            width: 90%; max-width: 350px; text-align: center; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3); margin: auto; 
+            width: 90%; max-width: 400px; text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
+            margin: 0; 
         }
 
-        /* MOBILE RESPONSIVE */
+        /* --- 2. MOBİL ÖZEL AYARLAR --- */
         @media (max-width: 768px) {
-            html, body { padding: 5px; }
-            .app-header { flex-direction: column; padding: 15px; height: auto; }
-            .header-box { width: 100%; height: 70px; margin-bottom: 10px; }
-            .header-info { margin-bottom: 10px; }
-            .content-area { padding: 20px 15px; }
+            html, body {
+                padding: 0; /* Mobilde tam ekran */
+                font-size: 14px; /* Fontu küçült */
+            }
+            .container { padding: 5px; }
+
+            .card {
+                border-radius: 12px;
+                min-height: auto;
+                padding-bottom: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            }
+
+            .app-header { padding: 10px 15px; gap: 10px; }
+            .header-box { height: 50px; width: 80px; border-radius: 6px; }
+            .header-title { font-size: 1rem; }
+            .header-slogan { font-size: 0.6rem; letter-spacing: 1px; }
+
+            .content-area { padding: 15px; }
+
+            .input-sync-wrapper { 
+                gap: 8px; margin: 5px 0; padding: 6px 10px; border-radius: 8px; 
+            }
+            .number-input { width: 60px; padding: 4px; font-size: 1.1rem; border-radius: 6px; }
+            input[type="range"] { height: 4px; }
+            input[type="range"]::-webkit-slider-thumb { width: 18px; height: 18px; border-width: 2px; }
+
+            .nav-buttons { gap: 8px; margin-top: 15px; flex-wrap: nowrap; }
+            .btn { padding: 0 15px; border-radius: 8px; font-size: 0.85rem; gap: 5px; min-height: 40px; }
+            .btn-restart { margin-top: 8px; }
+
+            /* MOBİL GRID: SIKIŞIK NİZAM */
+            .checkbox-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 8px; 
+            }
+            .cb-item label {
+                flex-direction: column; /* İkon üstte, yazı altta */
+                justify-content: center; text-align: center;
+                gap: 5px; padding: 10px; font-size: 0.8rem; line-height: 1.2;
+            }
+            .cb-item label svg { width: 22px; height: 22px; }
+
+            .bmi-display-box { padding: 10px; margin-bottom: 15px; }
+            .bmi-val-large { font-size: 2rem; }
+            .bmi-status-text { font-size: 0.9rem; margin-top: 2px; }
+
+            h2 { font-size: 1.2rem; margin-bottom: 8px; }
+            p { font-size: 0.9rem; line-height: 1.4; margin-bottom: 15px; }
             
-            .checkbox-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .cb-item label { padding: 12px; font-size: 0.85rem; flex-direction: column; text-align: center; justify-content: center; }
-            
-            .nav-buttons { flex-direction: column-reverse; gap: 10px; }
-            .btn { width: 100%; font-size: 1rem; padding: 14px; }
-            
-            h2 { font-size: 1.4rem; }
-            
-            .report-grid { grid-template-columns: 1fr; padding: 20px; }
+            .psycho-text { padding: 10px; border-radius: 0 8px 8px 0; font-size: 0.85rem; border-width: 3px; margin: 15px 0; }
+            .summary-box { padding: 15px; border-radius: 12px; margin-bottom: 15px; border-width: 1px; }
+            .summary-box h2 { font-size: 1.2rem; margin: 3px 0 8px 0; }
+            .summary-box h3 { font-size: 0.75rem; }
+
+            /* Rapor Mobilde tam otursun */
+            .modal-content { 
+                width: 100%; max-width: 100%; margin: 10px 0; border-radius: 8px; 
+            }
+            .report-grid { grid-template-columns: 1fr; padding: 15px; gap: 10px; }
             .report-header { padding: 20px; }
-            .report-meta { padding: 15px 20px; flex-direction: column; gap: 5px; }
-            .modal-content { margin: 10px 0; border-radius: 8px; }
+            .report-header h1 { font-size: 1.2rem; }
+            .report-meta { flex-direction: column; gap: 5px; padding: 10px; }
+            
+            /* Footer mobilde daha da küçük */
+            .report-footer { font-size: 0.5rem; padding: 10px; }
+
+            /* Name Modal Mobilde Üste Sabit */
+            .name-modal-overlay {
+                padding-top: 60px; /* Mobilde biraz daha yukarı */
+            }
         }
         
+        /* KÜÇÜK EKRANLAR (iPhone SE vb.) */
+        @media (max-width: 380px) {
+            .header-box { width: 60px; height: 40px; }
+            .header-title { font-size: 0.9rem; }
+            .btn { font-size: 0.8rem; padding: 0 10px; }
+        }
+
+        /* --- 3. YAZDIRMA (PRINT) ÖZEL AYARLARI --- */
         @media print {
-            body * { visibility: hidden; }
-            .modal-content, .modal-content * { visibility: visible; }
-            .modal-overlay { position: absolute; left: 0; top: 0; padding: 0; display: block; background: white; }
-            .modal-content { margin: 0; box-shadow: none; border: none; width: 100%; }
-            .nav-buttons { display: none !important; }
+            body * { visibility: hidden; } /* Her şeyi gizle */
+            
+            .modal-content, .modal-content * { 
+                visibility: visible; 
+            }
+            
+            .modal-overlay { 
+                position: absolute; 
+                left: 0; top: 0; 
+                width: 100%; height: auto; 
+                padding: 0; margin: 0; 
+                display: block !important; 
+                background: none !important;
+                backdrop-filter: none;
+                z-index: 9999;
+            }
+            
+            .modal-content { 
+                position: absolute; 
+                left: 0; top: 0; 
+                width: 100%; max-width: 100%; 
+                margin: 0; 
+                padding: 0;
+                box-shadow: none; 
+                border: none; 
+                background: white;
+            }
+            
+            .nav-buttons, .btn { display: none !important; }
+            p, h1, h2, h3, h4, span, strong { -webkit-print-color-adjust: exact; }
         }
 
         .hidden { display: none !important; }
@@ -293,11 +396,11 @@
 
     <div class="name-modal-overlay" id="nameModal">
         <div class="name-modal-content">
-            <h3 style="color: var(--primary); margin-bottom: 10px;">Raporunuz Hazırlanıyor</h3>
-            <p style="font-size:0.9rem; color:#666; margin-bottom: 15px;">Size özel rapor için lütfen adınızı giriniz.</p>
-            <input type="text" id="pdfPatientName" placeholder="Adınız Soyadınız" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:10px; margin-bottom:15px; text-align:center; font-size:1rem;">
+            <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">Raporunuz Hazırlanıyor</h3>
+            <p style="font-size:0.9rem; color:#666; margin-bottom: 12px;">Size özel rapor için lütfen adınızı giriniz.</p>
+            <input type="text" id="pdfPatientName" placeholder="Adınız Soyadınız" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:8px; margin-bottom:12px; text-align:center; font-size:1rem;">
             <button class="btn btn-primary" style="width:100%" onclick="finalizeReport()">Raporu İndir</button>
-            <button class="btn btn-secondary" style="width:100%; margin-top:10px;" onclick="document.getElementById('nameModal').style.display='none'">Vazgeç</button>
+            <button class="btn btn-secondary" style="width:100%; margin-top:8px;" onclick="document.getElementById('nameModal').style.display='none'">Vazgeç</button>
         </div>
     </div>
 
@@ -321,7 +424,7 @@
                 <div id="step1" class="step-section">
                     <h2 style="color: var(--primary);">Hoş Geldiniz</h2>
                     <p>Merhaba, ben Doç. Dr. Mehmet Kaplan'ın dijital asistanıyım. Sağlık yolculuğunuzda size en doğru haritayı çizmek için buradayım.</p>
-                    <h3 style="margin-bottom: 15px; font-size:1rem; color:#2d3748;">Daha önce obezite cerrahisi geçirdiniz mi?</h3>
+                    <h3 style="margin-bottom: 10px; font-size:1rem; color:#2d3748;">Daha önce obezite cerrahisi geçirdiniz mi?</h3>
                     <div class="checkbox-grid">
                         <div class="cb-item">
                             <input type="radio" name="revision" id="revNo" onchange="handleRevision(false)">
@@ -423,9 +526,9 @@
                         <div style="font-size:1rem; font-weight:600; color:#718096;" id="res_status">-</div>
                     </div>
                     <div class="psycho-text" id="res_psycho_text">Analiz ediliyor...</div>
-                    <div class="nav-buttons" style="flex-direction: column;">
+                    <div class="nav-buttons" style="flex-direction: column; gap:10px;">
                         <button class="btn btn-primary" onclick="goToCouncil()">Özet Bilimsel Konsey Raporuna Git ➡️</button>
-                        <div class="nav-buttons" style="margin-top:10px;">
+                        <div class="nav-buttons" style="margin-top:5px; gap:10px;">
                             <button class="btn btn-secondary" onclick="openNameModal()" style="border-color:var(--accent); color:var(--accent);">📥 Detaylı Raporu İndir</button>
                             <button class="btn btn-secondary" onclick="prevStep()">⬅️ Geri</button>
                         </div>
@@ -441,12 +544,12 @@
                         <p id="sum_treatment_reason">-</p>
                         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
                             <strong>Tedavi Alternatifleri ve Gerekçe:</strong>
-                            <p id="sum_pros" style="font-size: 0.9rem; margin-top: 5px;">-</p>
+                            <p id="sum_pros" style="font-size: 0.95rem; margin-top: 5px;">-</p>
                         </div>
                     </div>
-                    <div class="nav-buttons" style="flex-direction: column;">
+                    <div class="nav-buttons" style="flex-direction: column; gap:10px;">
                         <button class="btn btn-primary" onclick="openNameModal()">📄 Detaylı Rapor ve İndir</button>
-                        <div class="nav-buttons" style="margin-top: 5px;">
+                        <div class="nav-buttons" style="margin-top: 5px; gap:10px;">
                             <button class="btn btn-whatsapp" onclick="window.open('https://wa.me/905050118899', '_blank')">💬 WhatsApp Danışma</button>
                             <button class="btn btn-secondary" onclick="window.open('https://via.placeholder.com/1?text=Randevu', '_blank')">📅 Randevu Al</button>
                         </div>
@@ -464,7 +567,7 @@
         <div class="modal-content">
             <div class="report-header">
                 <div class="header-content">
-                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="Logo" style="height:50px; margin-bottom:10px;">
+                    <img src="https://static.wixstatic.com/media/790e49_d4dce406988b4bbf9361a84ad77b16af~mv2.png" alt="Logo" style="height:50px; margin-bottom:5px;">
                     <h1>KONSÜLTASYON RAPORU</h1>
                     <p>ANTEPDİYABEZİTE - BİRLİKTE BAŞARABİLİRİZ</p>
                 </div>
@@ -478,7 +581,7 @@
 
             <div class="konsey-highlight">
                 <span class="konsey-badge">BİLİMSEL KONSEY KARARI</span>
-                <h2 id="rpt_konsey_title" style="color: var(--primary); margin: 10px 0; font-size:1.4rem;">-</h2>
+                <h2 id="rpt_konsey_title" style="color: var(--primary); margin: 5px 0; font-size:1.4rem;">-</h2>
                 <p id="rpt_konsey_reason" style="color: #4a5568;">-</p>
             </div>
 
@@ -517,7 +620,7 @@
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             if (type === 'click') {
-                osc.frequency.value = 600; gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+                osc.frequency.value = 600; gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             }
@@ -607,7 +710,6 @@
                 else text = "Kilonun ötesinde, metabolik hastalıklar sağlığınızı tehdit ediyor. Sadece zayıflamayı değil, sağlığınızı geri kazanmayı hedefliyoruz.";
             } else if (bmi < 40) text = "Eklem ağrıları ve halsizliğin hayatınızı zorlaştırdığını biliyoruz. Vücudunuz yardım istiyor ve biz bu yükü birlikte kaldırmaya hazırız.";
             else text = "Bu metabolik bir savaş ve defalarca denemenize rağmen sonuç alamamanız sizin suçunuz değil. Artık bu savaşta yalnız değilsiniz.";
-            
             document.getElementById('res_psycho_text').innerText = text;
             nextStep();
         }
@@ -628,7 +730,6 @@
             const insurance = data.insurance;
             
             let treat="", title="", reason="", pros="", detail="", ewl="", gains="", fin="";
-
             // 1. TIBBİ ALGORİTMA
             if(bmi < 30) {
                 treat = "Ameliyatsız Yöntemler";
